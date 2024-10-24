@@ -63,7 +63,7 @@ A special thanks to our partners who support this repository and share our resou
 - [Star Citizen Academy](https://www.starcitizen.academy/) - Academy for pilots and detailed guides.
 - [Star Citizen Wiki](https://starcitizen.tools/) - Partner for official game information.
 
-If you’d like to become a partner and have your site or organization listed here, contact us by opening an **Issue** or sending a **pull request**.
+If you'd like to become a partner and have your site or organization listed here, please visit the [Partners](Partners.md) page
 
 ---
 
