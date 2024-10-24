@@ -16,7 +16,7 @@ The purpose of this repository is to provide a centralized place where players, 
 
 ## 🚀 How to Use This Repository
 
-Browse the resources organized by category below. You can use the [Repository](https://github.com/Anyma6/hangarlinks) or the related site [hangarlinks.com](https://hangarlinks.com)
+Browse the resources organized by category below. You can use the [Repository](https://github.com/Anyma6/hangarlinks) or the related site [hangarlinks.com](https://hangarlinks.com).
 
 ### 🗂 Categories
 
