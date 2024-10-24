@@ -1,4 +1,4 @@
-# 🌌 hangarlinks - Star Citizen Community Resources 🌌
+# 🌌 HangarLinks - Star Citizen Community Resources 🌌
 
 [![Repository Stars](https://img.shields.io/github/stars/Anyma6/hangarlinks?style=social)](https://github.com/Anyma6/hangarlinks/stargazers)
 [![Repository Forks](https://img.shields.io/github/forks/Anyma6/hangarlinks?style=social)](https://github.com/Anyma6/hangarlinks/network/members)
@@ -6,7 +6,7 @@
 [![Issues](https://img.shields.io/github/issues/Anyma6/hangarlinks)](https://github.com/Anyma6/hangarlinks/issues)
 [![Pull Requests](https://img.shields.io/github/issues-pr/Anyma6/hangarlinks)](https://github.com/Anyma6/hangarlinks/pulls)
 
-Welcome to **hangarlinks**, the repository dedicated to collecting the **best community-created resources** for the game _Star Citizen_. Here, you’ll find a curated list of websites, tools, guides, and more, all created by the fantastic Star Citizen community to enhance your gameplay experience.
+Welcome to **HangarLinks**, the repository dedicated to collecting the **best community-created resources** for the game _Star Citizen_. Here, you’ll find a curated list of websites, tools, guides, and more, all created by the fantastic Star Citizen community to enhance your gameplay experience.
 
 ## 🎯 Repository Objective
 
@@ -16,10 +16,11 @@ The purpose of this repository is to provide a centralized place where players, 
 
 ## 🚀 How to Use This Repository
 
-Browse the resources organized by category below. Click on the links to directly access the resources.
+Browse the resources organized by category below. You can use the [Repository](https://github.com/Anyma6/hangarlinks) or the related site [hangarlinks.com](https://hangarlinks.com)
 
 ### 🗂 Categories
 
+#### English Resources
 - **Navigation Tools**
   - [StellarMap](https://stellarmap.com) - An interactive map of the Star Citizen galaxy.
   - [StarMap](https://robertsspaceindustries.com/starmap) - Official Star Citizen map.
@@ -36,30 +37,21 @@ Browse the resources organized by category below. Click on the links to directly
   - [Reddit - Star Citizen](https://www.reddit.com/r/starcitizen/) - Discussions, news, and more.
   - [Spectrum](https://robertsspaceindustries.com/spectrum) - The official community forum.
 
----
+#### Non-English Resources
+We also support non-English resources, organized by language for easy access.
 
-## 🛠 How to Contribute
+- **Italiano (Italian)**:
+  - [Star Citizen Italia](https://www.starcitizenitalia.com) - Official Italian community for Star Citizen with news, guides, and discussions.
+  - [Guida Commerciale](https://tradesc.it.guida) - Trading guide in Italian for Star Citizen.
 
-We are always looking for new resources! **Want to contribute?** It’s easy! Follow these steps:
-
-1. **Fork** this repository by clicking the button below:
-   
-   [![Fork this repository](https://img.shields.io/github/forks/Anyma6/hangarlinks?label=Fork%20this%20repository&style=social)](https://github.com/Anyma6/hangarlinks/fork)
-
-2. Add your resource to the `resources.md` file under the appropriate category.
-3. Submit a **pull request** and clearly describe what you've added and why it's useful for the community.
-
-Every contributor will receive a special thanks and be added to the **Contributors** list! Check out the current contributors:
-
-[![Contributors](https://img.shields.io/github/contributors/Anyma6/hangarlinks)](https://github.com/Anyma6/hangarlinks/graphs/contributors)
+- **Deutsch (German)**:
+  - [Star Citizen DE Community](https://starcitizende.community) - German community with tutorials, trading tips, and ship guides.
 
 ---
 
 ## 🌟 Invitation to Contribute!
 
-![You're welcome to contribute!](https://img.shields.io/badge/%F0%9F%92%A5-Help%20Us%20Grow%20This%20List%21-green?style=for-the-badge)
-
-Help us grow this collection of resources and contribute to the success of the Star Citizen community! Together, we can create the **most complete resource list** for all players. Click **Fork** and do your part!
+We welcome contributions from the community! Check out our [Contribute Guidelines](Contribute.md) for detailed instructions on how to add new resources or improve the repository.
 
 ---
 
@@ -75,15 +67,6 @@ If you’d like to become a partner and have your site or organization listed he
 
 ---
 
-## 📜 Resource Guidelines
-
-To maintain the high quality of shared resources, we ask you to follow these guidelines:
-
-- Resources must be **up-to-date** and **relevant** to the current version of Star Citizen.
-- No unofficial content that violates Star Citizen’s terms of service will be accepted.
-- Guides and tutorials should be **complete** and well-structured to be useful to all players.
-
----
 
 💡 **Have you found an amazing resource? Share it with us and help other players explore the universe of Star Citizen!**
 
@@ -92,8 +75,4 @@ To maintain the high quality of shared resources, we ask you to follow these gui
 ## 📫 Contact
 
 For questions or suggestions, feel free to open an [Issue](https://github.com/Anyma6/hangarlinks/issues).
-
----
-
-![Star Citizen Logo](https://img.shields.io/badge/-Star%20Citizen%20Community%20Resources-blue?style=for-the-badge)
 
