@@ -51,7 +51,7 @@ We also support non-English resources, organized by language for easy access.
 
 ## 🌟 Invitation to Contribute!
 
-We welcome contributions from the community! Check out our [Contribute Guidelines](Contribute.md) for detailed instructions on how to add new resources or improve the repository.
+We welcome contributions from the community! Check out our [Contribute Guidelines](CONTRIBUTING.md) for detailed instructions on how to add new resources or improve the repository.
 
 ---
 
