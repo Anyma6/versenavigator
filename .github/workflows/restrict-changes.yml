@@ -23,17 +23,14 @@ jobs:
           END="<!-- END CATEGORIES -->"
           
           # Estrai le modifiche rispetto al branch di destinazione della pull request
-          DIFF=$(git diff "origin/${{ github.event.pull_request.base.ref }}" -- README.md)
+          DIFF=$(git diff "HEAD^" -- README.md)
           
-          # Estrai solo le modifiche nella sezione modificabile
-          MODIFIABLE_SECTION=$(echo "$DIFF" | sed -n "/$START/,/$END/p")
+          # Debug: Mostra la differenza calcolata
+          echo "DIFF CONTENT:"
+          echo "$DIFF"
           
-          # Rimuovi spazi e nuove linee per il confronto
-          DIFF_CLEAN=$(echo "$DIFF" | tr -d '[:space:]')
-          MODIFIABLE_SECTION_CLEAN=$(echo "$MODIFIABLE_SECTION" | tr -d '[:space:]')
-
-          # Confronto tra le sezioni pulite
-          if [ "$DIFF_CLEAN" != "$MODIFIABLE_SECTION_CLEAN" ]; then
+          # Verifica se la differenza contiene modifiche al di fuori della sezione consentita
+          if echo "$DIFF" | awk "/$START/,/$END/" | grep -qv "$END"; then
             echo "status=failure" >> $GITHUB_ENV
             echo "The changes are outside the allowed 'Categories' section." >> $GITHUB_STEP_SUMMARY
             exit 1
