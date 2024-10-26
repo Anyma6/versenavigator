@@ -10,51 +10,52 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v4
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
-    - name: Check modified section
-      id: check_changes
-      run: |
-        # Delimitatori della sezione
-        START="<!-- START CATEGORIES -->"
-        END="<!-- END CATEGORIES -->"
-        
-        # Estrai le modifiche nella pull request
-        DIFF=$(git diff origin/main -- README.md)
-        
-        # Estrai la sezione modificabile
-        MODIFIABLE_SECTION=$(echo "$DIFF" | sed -n "/$START/,/$END/p")
-        
-        # Imposta l'esito in base alla presenza di modifiche non consentite
-        if [ "$DIFF" != "$MODIFIABLE_SECTION" ]; then
-          echo "status=failure" >> $GITHUB_ENV
-          echo "The changes are outside the allowed `Categories` section." >> $GITHUB_STEP_SUMMARY
-          exit 1
-        else
-          echo "status=success" >> $GITHUB_ENV
-          echo "The changes are within the allowed `Categories` section." >> $GITHUB_STEP_SUMMARY
-        fi
+      - name: Check modified section
+        id: check_changes
+        run: |
+          # Delimitatori della sezione
+          START="<!-- START CATEGORIES -->"
+          END="<!-- END CATEGORIES -->"
+          
+          # Estrai le modifiche nella pull request
+          DIFF=$(git diff origin/main -- README.md)
+          
+          # Estrai la sezione modificabile
+          MODIFIABLE_SECTION=$(echo "$DIFF" | sed -n "/$START/,/$END/p")
+          
+          # Imposta l'esito in base alla presenza di modifiche non consentite
+          if [ "$DIFF" != "$MODIFIABLE_SECTION" ]; then
+            echo "status=failure" >> $GITHUB_ENV
+            echo "The changes are outside the allowed 'Categories' section." >> $GITHUB_STEP_SUMMARY
+            exit 1
+          else
+            echo "status=success" >> $GITHUB_ENV
+            echo "The changes are within the allowed 'Categories' section." >> $GITHUB_STEP_SUMMARY
+          fi
 
-    - name: Comment on pull request
-      uses: actions/github-script@v7
-      if: always()  # Esegui comunque, indipendentemente dall'esito
-      with:
-        github-token: ${{ secrets.GITHUB_TOKEN }}
-        script: |
-          const status = process.env.status;
-          if (status === 'success') {
-            github.rest.issues.createComment({
-              issue_number: context.issue.number,
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              body: "✅ Changes to the README.md file are limited to the 'Categories' section, great!"
-            });
-          } else {
-            github.rest.issues.createComment({
-              issue_number: context.issue.number,
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              body: "❌ "Changes to the README.md have been detected outside the 'Categories' section. Please read the CONTRIBUTING.md file."
-            });
-          }
+      - name: Comment on pull request
+        uses: actions/github-script@v7
+        if: always()  # Esegui comunque, indipendentemente dall'esito
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const status = process.env.status;
+            if (status === 'success') {
+              github.rest.issues.createComment({
+                issue_number: context.issue.number,
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                body: "✅ Changes to the README.md file are limited to the 'Categories' section, great!"
+              });
+            } else {
+              github.rest.issues.createComment({
+                issue_number: context.issue.number,
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                body: "❌ Changes to the README.md have been detected outside the 'Categories' section. Please read the CONTRIBUTING.md file."
+              });
+            }
+
