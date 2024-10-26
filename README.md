@@ -12,13 +12,13 @@ Welcome to **VerseNavigator**, the repository dedicated to collecting the **best
 
 The purpose of this repository is to provide a centralized place where players, both new and experienced, can find and share the best websites and tools related to Star Citizen. Whether you're a seasoned commander or a new pilot, you'll find useful resources here to improve your in-game experience.
 
----
-
-## 🚀 How to Use This Repository
+## 🚀 RESOURCES
 
 Browse the resources organized by category below. You can use the [Repository](https://github.com/Anyma6/versenavigator) or the related site [versenavigator.com](https://versenavigator.com).
 
 ### 🗂 Categories
+<!-- START CATEGORIES -->
+<!-- CHANGES ACCEPTED ONLY AFTER THIS LINE. Please read the CONTRIBUTING.md file. -->
 
 #### English Resources
 - **Status**
@@ -67,13 +67,12 @@ We also support non-English resources, organized by language for easy access.
   - [Star Citizen Italia](https://www.starcitizenitalia.com) - Italian community for Star Citizen with news, guides, and discussions.
   - [Aumentare gli FPS](https://italianerd.com/resources/aumentare-gli-fps-su-star-citizen.19/) - Guide to Increase FPS in Star Citizen (Creator: RSI [anyma](https://robertsspaceindustries.com/citizens/anyma))
 
----
+<!-- CHANGES ACCEPTED ONLY BEFORE THIS LINE. Please read the CONTRIBUTING.md file. -->
+<!-- END CATEGORIES -->
 
 ## 🌟 Invitation to Contribute!
 
 We welcome contributions from the community! Check out our [Contribute Guidelines](CONTRIBUTING.md) for detailed instructions on how to add new resources or improve the repository.
-
----
 
 ## 🤝 Partners
 
@@ -85,11 +84,10 @@ If you'd like to become a partner and have your site or organization listed here
 
 ---
 
-
 💡 **Have you found an amazing resource? Share it with us and help other players explore the universe of Star Citizen!**
 
 ---
 
 ## 📫 Contact
 
-For questions or suggestions, feel free to open an [Issue](https://github.com/Anyma6/versenavigator/issues).
+For questions or suggestions, feel free to open an [Issue](https://github.com/Anyma6/versenavigator/issues) or send an email to info@versenavigator.com.
