@@ -13,20 +13,28 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Check modified section
-        id: check_changes
+      - name: Get diff of README.md
+        id: get_diff
         run: |
           # Delimitatori della sezione
           START="<!-- START CATEGORIES -->"
           END="<!-- END CATEGORIES -->"
           
-          # Estrai le modifiche nella pull request
+          # Estrai le modifiche nella pull request rispetto al branch principale
           DIFF=$(git diff origin/main -- README.md)
           
-          # Estrai la sezione modificabile
+          # Debug: mostra il contenuto della differenza
+          echo "DIFF CONTENT:"
+          echo "$DIFF"
+          
+          # Estrai solo le modifiche nella sezione modificabile
           MODIFIABLE_SECTION=$(echo "$DIFF" | sed -n "/$START/,/$END/p")
           
-          # Imposta l'esito in base alla presenza di modifiche non consentite
+          # Debug: mostra il contenuto della sezione modificabile
+          echo "MODIFIABLE SECTION CONTENT:"
+          echo "$MODIFIABLE_SECTION"
+          
+          # Confronta se le modifiche sono limitate alla sezione
           if [ "$DIFF" != "$MODIFIABLE_SECTION" ]; then
             echo "status=failure" >> $GITHUB_ENV
             echo "The changes are outside the allowed 'Categories' section." >> $GITHUB_STEP_SUMMARY
@@ -58,4 +66,3 @@ jobs:
                 body: "❌ Changes to the README.md have been detected outside the 'Categories' section. Please read the CONTRIBUTING.md file."
               });
             }
-
