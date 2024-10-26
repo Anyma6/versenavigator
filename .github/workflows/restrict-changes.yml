@@ -1,0 +1,34 @@
+name: Restrict Modifications to Categories Section
+
+on:
+  pull_request:
+    paths:
+      - "README.md"
+
+jobs:
+  check-changes:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Check modified section
+      run: |
+        # Estrai il contenuto della sezione modificabile
+        START="<!-- START CATEGORIES -->"
+        END="<!-- END CATEGORIES -->"
+        
+        # Leggi le modifiche usando git diff
+        DIFF=$(git diff origin/main -- README.md)
+        
+        # Estrai la sezione modificabile
+        MODIFIABLE_SECTION=$(echo "$DIFF" | sed -n "/$START/,/$END/p")
+        
+        # Se la differenza totale è diversa dalla sezione modificabile, fallisce
+        if [ "$DIFF" != "$MODIFIABLE_SECTION" ]; then
+          echo "❌ "Changes to the README.md have been detected outside the 'Categories' section. Please read the CONTRIBUTING.md file."
+          exit 1
+        else
+          echo "✅ Changes to the README.md file are limited to the 'Categories' section, great!"
+        fi
