@@ -22,15 +22,41 @@ jobs:
           START="<!-- START CATEGORIES -->"
           END="<!-- END CATEGORIES -->"
           
-          # Estrai le modifiche rispetto al branch di destinazione della pull request
+          # Estrai le modifiche rispetto al commit precedente
           DIFF=$(git diff "HEAD^" -- README.md)
           
           # Debug: Mostra la differenza calcolata
           echo "DIFF CONTENT:"
           echo "$DIFF"
           
-          # Verifica se la differenza contiene modifiche al di fuori della sezione consentita
-          if echo "$DIFF" | awk "/$START/,/$END/" | grep -qv "$END"; then
+          # Verifica se le modifiche sono esclusivamente all'interno della sezione consentita
+          IN_SECTION=false
+          OUTSIDE_CHANGES=false
+          
+          while IFS= read -r line; do
+            # Controlla l'inizio della sezione consentita
+            if echo "$line" | grep -q "$START"; then
+              IN_SECTION=true
+              continue
+            fi
+            
+            # Controlla la fine della sezione consentita
+            if echo "$line" | grep -q "$END"; then
+              IN_SECTION=false
+              continue
+            fi
+            
+            # Verifica se ci sono modifiche al di fuori della sezione
+            if [[ "$line" =~ ^(\+\+|\-\-) ]]; then
+              continue
+            elif [[ "$line" =~ ^(\+|\-) ]] && [ "$IN_SECTION" = false ]; then
+              OUTSIDE_CHANGES=true
+              break
+            fi
+          done <<< "$DIFF"
+          
+          # Imposta lo stato in base al risultato del controllo
+          if [ "$OUTSIDE_CHANGES" = true ]; then
             echo "status=failure" >> $GITHUB_ENV
             echo "The changes are outside the allowed 'Categories' section." >> $GITHUB_STEP_SUMMARY
             exit 1
