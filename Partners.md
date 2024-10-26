@@ -31,7 +31,7 @@ If you manage a Discord server and would like to become a partner, please follow
 
 3. **Content of the Channel**:
    - The channel should contain a **link to versenavigator.com** in the first message or pinned message so that it is easily accessible to all members of your Discord community.
-   - If your server contains additional Star Citizen resources that are not already included in our repository, we encourage you to **submit those resources** to versenavigator as well (see our [Contribute Guidelines](Contribute.md) for details).
+   - If your server contains additional Star Citizen resources that are not already included in our repository, we encourage you to **submit those resources** to versenavigator as well (see our [Contribute Guidelines](CONTRIBUTING.md) for details).
 
 4. **Submit Your Request**: After the channel has been created, you can request a partnership by either:
    - Sending an email to **partner@versenavigator.com** with the following details:
