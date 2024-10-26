@@ -29,7 +29,7 @@ Browse the resources organized by category below. You can use the [Repository](h
   - [SC Ships Performances Viewer](https://www.spviewer.eu/) - Another site similar to the one above, offering additional metrics and relevant information.
   - [Ship Cargo Grid Reference Sheets](https://robertsspaceindustries.com/community-hub/post/3-22-ship-cargo-grid-reference-sheets-fTX3VoNJNa2qQ) - Isometric representation of the cargo of available ships, useful for maximizing SCU usage (Creator: RSI [Erec](https://robertsspaceindustries.com/citizens/Erec)) (Discovered by: RSI [anyma](https://robertsspaceindustries.com/citizens/anyma)).
 
-- **Items**
+- **Items** TESTABC
   - [CStone](https://finder.cstone.space/) - Database that lets you search for any item and find out where to buy it.
 
 - **Trading, Mining and Economy**
