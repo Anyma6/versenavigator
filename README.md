@@ -6,7 +6,7 @@
 [![Issues](https://img.shields.io/github/issues/Anyma6/versenavigator)](https://github.com/Anyma6/versenavigator/issues)
 [![Pull Requests](https://img.shields.io/github/issues-pr/Anyma6/versenavigator)](https://github.com/Anyma6/versenavigator/pulls)
 
-Welcome to **VerseNavigator**, the repository dedicated to collecting the **best community-created resources** for the game _Star Citizen_. Here, you’ll find a curated list of websites, tools, guides, and more, all created by the fantastic Star Citizen community to enhance your gameplay experience.
+Welcome to **VerseNavigator**, the repository dedicated to collecting the **best community-created resources** for the game _Star Citizen_. Here, you’ll find a curated list of websites, tools, guides, and more, all created by the fantastic Star Citizen community to enhance your gameplay experience. test
 
 ## 🎯 Repository Objective
 
