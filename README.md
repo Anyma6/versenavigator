@@ -10,7 +10,7 @@ Welcome to **VerseNavigator**, the repository dedicated to collecting the **best
 
 ## 🎯 Repository Objective
 
-The purpose of this repository is to provide a centralized place where players, both new and experienced, can find and share the best websites and tools related to Star Citizen. Whether you're a seasoned commander or a new pilot, you'll find useful resources here to improve your in-game experience.
+The purpose of this repository is to provide a centralized place where players, both new and experienced, can find and share the best websites and tools related to Star Citizen. Whether you're a seasoned commander or a new pilot, you'll find useful resources here to improve your in-game experience. test
 
 ## 🚀 RESOURCES
 
