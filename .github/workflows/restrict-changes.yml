@@ -13,7 +13,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0
+          fetch-depth: 0  # Clona l'intera cronologia per il confronto
 
       - name: Get diff of README.md
         id: get_diff
@@ -23,14 +23,17 @@ jobs:
           END="<!-- END CATEGORIES -->"
           
           # Estrai le modifiche rispetto al branch principale
-          git fetch origin main:main
           DIFF=$(git diff main -- README.md)
           
           # Estrai solo le modifiche nella sezione modificabile
           MODIFIABLE_SECTION=$(echo "$DIFF" | sed -n "/$START/,/$END/p")
           
           # Rimuovi spazi e nuove linee per il confronto
-          if [ "$(echo "$DIFF" | tr -d '[:space:]')" != "$(echo "$MODIFIABLE_SECTION" | tr -d '[:space:]')" ]; then
+          DIFF_CLEAN=$(echo "$DIFF" | tr -d '[:space:]')
+          MODIFIABLE_SECTION_CLEAN=$(echo "$MODIFIABLE_SECTION" | tr -d '[:space:]')
+
+          # Confronto tra le sezioni pulite
+          if [ "$DIFF_CLEAN" != "$MODIFIABLE_SECTION_CLEAN" ]; then
             echo "status=failure" >> $GITHUB_ENV
             echo "The changes are outside the allowed 'Categories' section." >> $GITHUB_STEP_SUMMARY
             exit 1
