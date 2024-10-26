@@ -12,6 +12,8 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Assicura che tutti i branch siano disponibili localmente
 
       - name: Get diff of README.md
         id: get_diff
