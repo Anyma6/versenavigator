@@ -17,8 +17,6 @@ The purpose of this repository is to provide a centralized place where players, 
 Browse the resources organized by category below. You can use the [Repository](https://github.com/Anyma6/versenavigator) or the related site [versenavigator.com](https://versenavigator.com).
 
 ### 🗂 Categories
-<!-- START CATEGORIES -->
-<!-- CHANGES ACCEPTED ONLY AFTER THIS LINE. Please read the CONTRIBUTING.md file. -->
 
 #### English Resources
 - **Status**
@@ -67,8 +65,6 @@ We also support non-English resources, organized by language for easy access.
   - [Star Citizen Italia](https://www.starcitizenitalia.com) - Italian community for Star Citizen with news, guides, and discussions.
   - [Aumentare gli FPS](https://italianerd.com/resources/aumentare-gli-fps-su-star-citizen.19/) - Guide to Increase FPS in Star Citizen (Creator: RSI [anyma](https://robertsspaceindustries.com/citizens/anyma))
 
-<!-- CHANGES ACCEPTED ONLY BEFORE THIS LINE. Please read the CONTRIBUTING.md file. -->
-<!-- END CATEGORIES -->
 
 ## 🌟 Invitation to Contribute!
 
