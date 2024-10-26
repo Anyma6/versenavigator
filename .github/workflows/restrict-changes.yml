@@ -22,8 +22,8 @@ jobs:
           START="<!-- START CATEGORIES -->"
           END="<!-- END CATEGORIES -->"
           
-          # Estrai le modifiche rispetto al branch principale
-          DIFF=$(git diff main -- README.md)
+          # Estrai le modifiche rispetto al branch di destinazione della pull request
+          DIFF=$(git diff "origin/${{ github.event.pull_request.base.ref }}" -- README.md)
           
           # Estrai solo le modifiche nella sezione modificabile
           MODIFIABLE_SECTION=$(echo "$DIFF" | sed -n "/$START/,/$END/p")
