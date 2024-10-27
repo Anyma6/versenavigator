@@ -2,8 +2,6 @@
 
 Thank you for your interest in becoming a partner of **versenavigator**! Our partners help us grow by sharing our resources with the community, and we appreciate their support. Below are the requirements to become a partner, depending on whether you are representing a website or a Discord server.
 
----
-
 ## 🌐 Partnering as a Website
 
 If you represent a website and wish to become a partner, please meet the following requirements:
@@ -18,8 +16,6 @@ If you represent a website and wish to become a partner, please meet the followi
    - Or, you can open an **Issue** on our [GitHub repository](https://github.com/Anyma6/versenavigator/issues), providing the same information.
 
 We will review your request, and if it meets our guidelines, your website will be added to the **Partners** section of versenavigator.
-
----
 
 ## 💬 Partnering as a Discord Server
 
@@ -42,8 +38,6 @@ If you manage a Discord server and would like to become a partner, please follow
    - Or, open an **Issue** on our [GitHub repository](https://github.com/Anyma6/versenavigator/issues), providing the same information.
 
 Upon review, we will add your Discord server to the **Partners** section of versenavigator if it meets the requirements.
-
----
 
 ## Benefits of Partnership
 
