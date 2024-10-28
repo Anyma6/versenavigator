@@ -27,19 +27,17 @@ jobs:
       - name: Run duplicate domain checker
         id: check_links
         run: |
-          output=$(python check_links.py)
+          output=$(python check_links.py) || exit_code=$?
           echo "$output"
-          if echo "$output" | grep -q "DUPLICATE_DOMAINS"; then
-            echo "::set-output name=duplicate_domains::$(echo "$output" | grep -A1000 "DUPLICATE_DOMAINS" | tail -n +2)"
-          fi
+          echo "$output" | grep -q "DUPLICATE_DOMAINS" && echo "duplicate_domains=${output}" >> $GITHUB_ENV
+          exit $exit_code || 0  # Imposta un'uscita senza errore se duplicati sono stati trovati
 
       - name: Comment on pull request with warning if duplicates found
-        if: steps.check_links.outputs.duplicate_domains
+        if: env.duplicate_domains
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          duplicate_domains="${{ steps.check_links.outputs.duplicate_domains }}"
           curl -X POST -H "Authorization: token $GITHUB_TOKEN" \
           -H "Content-Type: application/json" \
-          -d "{\"body\": \"⚠️ Potential duplicate domain(s) found in the PR:\n${duplicate_domains}\nPlease make sure these resources are not already listed. If this is an error, please open an issue linking this PR.\"}" \
+          -d "{\"body\": \"⚠️ Potential duplicate domain(s) found in the PR:\n${{ env.duplicate_domains }}\nPlease make sure these resources are not already listed. If this is an error, please open an issue linking this PR.\"}" \
           "${{ github.event.pull_request.url }}/comments"
