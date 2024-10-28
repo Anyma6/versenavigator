@@ -1,0 +1,42 @@
+name: Check for duplicate domains in links
+
+on:
+  pull_request:
+    types: [opened, synchronize]
+
+jobs:
+  check_links:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.x'
+
+      - name: Extract links from pull request
+        run: |
+          git diff origin/main... > pr_links.txt
+
+      - name: Run duplicate domain checker
+        id: check_links
+        run: |
+          output=$(python check_links.py)
+          echo "$output"
+          if echo "$output" | grep -q "DUPLICATE_DOMAINS"; then
+            echo "::set-output name=duplicate_domains::$(echo "$output" | grep -A1000 "DUPLICATE_DOMAINS" | tail -n +2)"
+          fi
+
+      - name: Comment on pull request with warning if duplicates found
+        if: steps.check_links.outputs.duplicate_domains
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          duplicate_domains="${{ steps.check_links.outputs.duplicate_domains }}"
+          curl -X POST -H "Authorization: token $GITHUB_TOKEN" \
+          -H "Content-Type: application/json" \
+          -d "{\"body\": \"⚠️ Potential duplicate domain(s) found in the PR:\n${duplicate_domains}\nPlease make sure these resources are not already listed. If this is an error, please open an issue linking this PR.\"}" \
+          "${{ github.event.pull_request.url }}/comments"
