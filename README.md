@@ -22,11 +22,15 @@ Browse the resources organized by category below. You can use the [Repository](h
   - [SC Ships Performances Viewer](https://www.spviewer.eu/) - Another site similar to the one above, offering additional metrics and relevant information.
   - [Ship Cargo Grid Reference Sheets](https://robertsspaceindustries.com/community-hub/post/3-22-ship-cargo-grid-reference-sheets-fTX3VoNJNa2qQ) - Isometric representation of the cargo of available ships, useful for maximizing SCU usage (Creator: RSI [Erec](https://robertsspaceindustries.com/citizens/Erec)) (Discovered by: RSI [anyma](https://robertsspaceindustries.com/citizens/anyma)).
 
+  - (Discovered by: RSI [anyma](https://robertsspaceindustries.com/citizens/anyma)). test allowed domain
+
 ### Items
   - [CStone](https://finder.cstone.space/) - Database that lets you search for any item and find out where to buy it.
+  -   - [CStone](https://finder.cstone.space/testdirectory) - Database that lets you search for any item and find out where to buy it.
 
 ### Trading, Mining and Economy
   - [SC Trade Tools](https://sc-trade.tools/) - Helps you discover the best trade routes.
+  -   - [SC Trade Tools](https://.testsubdomainsc-trade.tools/) - Helps you discover the best trade routes.
   - [Uexcorp](https://uexcorp.space/) - Useful information on trading, mining, and more.
   - [Regolith](https://regolith.rocks/) - Useful mining information.
 
@@ -58,6 +62,7 @@ We also support non-English resources, organized by language for easy access.
 
 ### Italiano (Italian)
   - [Star Citizen Italia](https://www.starcitizenitalia.com) - Italian community for Star Citizen with news, guides, and discussions.
+  -   - [Star Citizen Italia](https://www.starcitizenitalia.com/index.html) test index - Italian community for Star Citizen with news, guides, and discussions.
   - [Aumentare gli FPS](https://italianerd.com/resources/aumentare-gli-fps-su-star-citizen.19/) - Guide to Increase FPS in Star Citizen (Creator: RSI [anyma](https://robertsspaceindustries.com/citizens/anyma))
 
 
