@@ -1,0 +1,14 @@
+{
+  "name": "check-links",
+  "version": "1.0.0",
+  "description": "A GitHub Action to check for duplicate links in pull requests.",
+  "main": "check-links.js",
+  "scripts": {
+    "start": "node check-links.js"
+  },
+  "dependencies": {
+    "@actions/core": "^1.6.0",
+    "@actions/github": "^5.0.0",
+    "node-fetch": "^2.6.1"
+  }
+}
