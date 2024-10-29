@@ -24,12 +24,16 @@ Browse the resources organized by category below. You can use the [Repository](h
   - [CStone](https://finder.cstone.space/) - Database that lets you search for any item and find out where to buy it.
   - [Armory](https://armory.thespacecoder.space/) - Gear and loadout information.
   - [Star Citizen Quartermaster](https://sc-qm.tools/) - Equipment Planning and Management.
+  - [Star Citizen Quartermaster](https://sctest-qm.tools/) - Equipment Planning and Management.
+  - [Star Citizen Quartermaster](https://sc-qm.tools/test.html) - Equipment Planning and Management.
+  - [Star Citizen Quartermaster](https://sc-qm.tools/test/ciao) - Equipment Planning and Management.
 
 ### Trading, Mining and Economy
   - [SC Trade Tools](https://sc-trade.tools/) - Helps you discover the best trade routes.
   - [Uexcorp](https://uexcorp.space/) - Useful information on trading, mining, and more.
   - [Regolith](https://regolith.rocks/) - Useful mining information.
   - [SC Market](https://sc-market.space/) - Exchange in-game items and services for in-game currency.
+  - [SC Market](https://www.sc-market.space/) - Exchange in-game items and services for in-game currency. (test)
   - [Galactic Logistics](https://gallog.co/) - Information on trade routes, mining and more.
   - [RedMonsterGaming](https://redmonstergaming.com/) - Information on Mining and Salvage
   - [Star Citizen Routing Tool](https://primer23.github.io/SC-3.24-Routing-Tool-by-SigmaPrimer/Cargo%20Tool%20version%201.0.html) - Hauling Missions Routing Tool
@@ -85,8 +89,10 @@ Browse the resources organized by category below. You can use the [Repository](h
   - [Galactic Guide](https://chat.openai.com/g/g-eDMb1xtrH-gigi-your-galactic-guide)
   - [Banu Translator](https://chatgpt.com/g/g-TeqPpKMl3-banu-linguist)
   - [Xi'an Translator](https://chatgpt.com/g/g-pXIP19azp-xi-an-linguist)
+  - [Xi'an Translator](https://chatgpt.com/test)
 
 ### Others
+  - [Stararchive](https://starchives.org/) - SC Youtube video finder.
   - [Stararchive](https://starchives.org/) - SC Youtube video finder.
   - [The People's Radio](https://thepeoplesradio.space/) - SC Radio.
   - [Star Citizen Tracker](https://starcitizentracker.github.io/) - Develop tracker since kickstarter.
@@ -123,3 +129,4 @@ If you'd like to become a partner and have your site or organization listed here
 ## 📫 Contact
 
 For questions or suggestions, feel free to open an [Issue](https://github.com/Anyma6/versenavigator/issues) or send an email to info@versenavigator.com.
+
