@@ -1,0 +1,31 @@
+name: Check Links
+
+on:
+  pull_request:
+    types: [opened, synchronize]
+
+jobs:
+  check_links:
+    runs-on: ubuntu-latest
+
+    permissions:
+      pull-requests: write
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: '14'
+
+    - name: Install dependencies
+      run: npm install
+
+    - name: Run link checker
+      run: node .github/actions/check-links.js
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        exceptions: discord.com,robertsspaceindustries.com
