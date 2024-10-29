@@ -59,7 +59,7 @@ async function postComment(octokit, context, message) {
 
     const existingLinks = loadLinks();
     const newLinks = await loadPullRequestLinks(octokit, context);
-    const exceptions = core.getInput('exceptions').split(',');
+    const exceptions = ['discord.com', 'robertsspaceindustries.com']; // Specifica le eccezioni direttamente qui
 
     const duplicates = checkDuplicates(existingLinks, newLinks, exceptions);
     if (duplicates.length > 0) {
