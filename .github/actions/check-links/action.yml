@@ -1,0 +1,10 @@
+name: Check Links in Pull Request
+description: Check for duplicate links in pull requests against README.md
+
+runs:
+  using: "node16"  # Usa Node.js 16
+  main: "dist/index.js"
+
+on:
+  pull_request:
+    types: [opened, edited, reopened]
