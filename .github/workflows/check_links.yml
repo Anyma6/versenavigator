@@ -35,8 +35,7 @@ jobs:
         run: |
           if grep -q "DUPLICATE_DOMAINS" check_links_output.txt; then
             duplicate_domains=$(cat check_links_output.txt | grep -A1000 'DUPLICATE_DOMAINS' | tail -n +2)
-            # Rimuove "- " dall'inizio delle righe per evitare errori
-            duplicate_domains="${duplicate_domains//- /}"
+            duplicate_domains="${duplicate_domains//- /}" # Rimuove "- " per evitare errori
             echo "duplicate_domains<<EOF" >> $GITHUB_ENV
             echo "$duplicate_domains" >> $GITHUB_ENV
             echo "EOF" >> $GITHUB_ENV
@@ -48,7 +47,9 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           duplicate_domains="${{ env.duplicate_domains }}"
+          # Escape doppie virgolette per JSON
+          duplicate_domains_json=$(echo "$duplicate_domains" | jq -R . | jq -s . | tr -d '\n')
           curl -X POST -H "Authorization: token $GITHUB_TOKEN" \
           -H "Content-Type: application/json" \
-          -d "{\"body\": \"⚠️ Potential duplicate domain(s) found in the PR:\n${duplicate_domains}\nPlease make sure these resources are not already listed. If this is an error, please open an issue linking this PR.\"}" \
+          -d "{\"body\": \"⚠️ Potential duplicate domain(s) found in the PR:\n${duplicate_domains_json}\nPlease make sure these resources are not already listed. If this is an error, please open an issue linking this PR.\"}" \
           "${{ github.event.pull_request.url }}/comments"
