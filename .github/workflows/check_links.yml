@@ -12,7 +12,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
         with:
-          fetch-depth: 0  # Recupera tutto il repository, inclusi i rami remoti
+          fetch-depth: 0
 
       - name: Set up Python
         uses: actions/setup-python@v4
@@ -21,7 +21,7 @@ jobs:
 
       - name: Extract links from pull request
         run: |
-          git fetch origin main  # Assicura che il branch main sia disponibile
+          git fetch origin main
           git diff origin/main... > pr_links.txt
 
       - name: Run duplicate domain checker
@@ -34,7 +34,12 @@ jobs:
         id: parse_output
         run: |
           if grep -q "DUPLICATE_DOMAINS" check_links_output.txt; then
-            echo "duplicate_domains=$(cat check_links_output.txt | grep -A1000 'DUPLICATE_DOMAINS' | tail -n +2)" >> $GITHUB_ENV
+            duplicate_domains=$(cat check_links_output.txt | grep -A1000 'DUPLICATE_DOMAINS' | tail -n +2)
+            # Rimuove "- " dall'inizio delle righe per evitare errori
+            duplicate_domains="${duplicate_domains//- /}"
+            echo "duplicate_domains<<EOF" >> $GITHUB_ENV
+            echo "$duplicate_domains" >> $GITHUB_ENV
+            echo "EOF" >> $GITHUB_ENV
           fi
 
       - name: Comment on pull request with warning if duplicates found
