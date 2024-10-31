@@ -1,14 +1,18 @@
 import re
 import requests
+import json
 from bs4 import BeautifulSoup
 from markdown import markdown
 from pathlib import Path
 from urllib.parse import urljoin, urlparse
 
-def get_metadata(url):
-    """Fetch title, favicon, description, and domain for a link with defaults if missing."""
+def get_metadata(url, cache):
+    """Fetch title, favicon, description, and domain with caching and reduced timeout."""
+    if url in cache:
+        return cache[url]
+
     try:
-        response = requests.get(url, timeout=5)
+        response = requests.get(url, timeout=3)
         response.raise_for_status()
         soup = BeautifulSoup(response.content, 'html.parser')
 
@@ -20,13 +24,14 @@ def get_metadata(url):
         description = meta_description['content'].strip() if meta_description else ""
         domain = urlparse(url).netloc
 
-        return favicon_url, title, description, domain
+        cache[url] = (favicon_url, title, description, domain)
+        return cache[url]
     except Exception as e:
         print(f"Error fetching metadata from {url}: {e}")
         return "/favicon.ico", url, "", urlparse(url).netloc
 
 def convert_links_to_html(readme_path, output_path):
-    """Convert isolated links to dark-themed HTML with responsive, 2-column layout."""
+    """Convert isolated links to dark-themed HTML with responsive, 2-column layout and caching."""
     
     css_content = """
     <style>
@@ -112,6 +117,14 @@ def convert_links_to_html(readme_path, output_path):
     </style>
     """
     
+    # Load or create metadata cache
+    cache_path = Path("metadata_cache.json")
+    if cache_path.is_file():
+        with open(cache_path, "r") as f:
+            cache = json.load(f)
+    else:
+        cache = {}
+
     with open(readme_path, 'r', encoding='utf-8') as file:
         lines = file.readlines()
 
@@ -129,7 +142,7 @@ def convert_links_to_html(readme_path, output_path):
                 link_container_opened = True
             
             url = url_match.group(1)
-            favicon, title, description, domain = get_metadata(url)
+            favicon, title, description, domain = get_metadata(url, cache)
             html_line = (f'<div class="link-preview">'
                          f'<img src="{favicon}" alt="favicon">'
                          f'<div>'
@@ -145,7 +158,7 @@ def convert_links_to_html(readme_path, output_path):
             # Se il prossimo elemento è un link, raggruppa a coppie
             if i < len(lines) and re.match(r'^\s*(https?://[^\s]+)\s*$', lines[i].strip()):
                 url = re.match(r'^\s*(https?://[^\s]+)\s*$', lines[i].strip()).group(1)
-                favicon, title, description, domain = get_metadata(url)
+                favicon, title, description, domain = get_metadata(url, cache)
                 html_line = (f'<div class="link-preview">'
                              f'<img src="{favicon}" alt="favicon">'
                              f'<div>'
@@ -170,6 +183,10 @@ def convert_links_to_html(readme_path, output_path):
     html_content += "</div></body></html>"
 
     output_path.write_text(html_content, encoding='utf-8')
+
+    # Salva la cache aggiornata
+    with open(cache_path, "w") as f:
+        json.dump(cache, f)
 
 # Percorsi per input e output
 readme_path = Path("README.md")
