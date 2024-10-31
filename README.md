@@ -84,7 +84,7 @@ https://chatgpt.com/g/g-pXIP19azp-xi-an-linguist
 
 ### Others
 https://starchives.org/
-https://thepeoplesradio.space/
+https://thepeoplesradio.space
 https://starcitizentracker.github.io/
 https://dydrmr.github.io/VerseTime/#Orison
 https://randomizer.transversetheverse.com/
