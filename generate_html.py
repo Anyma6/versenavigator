@@ -8,7 +8,7 @@ from urllib.parse import urljoin, urlparse
 def get_metadata(url):
     """Recupera titolo, favicon, descrizione e dominio del link, con valori di fallback."""
     try:
-        response = requests.get(url, timeout=10)  # Timeout aumentato a 10 secondi
+        response = requests.get(url, timeout=5)
         response.raise_for_status()
         soup = BeautifulSoup(response.content, 'html.parser')
 
@@ -35,20 +35,20 @@ def get_metadata(url):
 def convert_links_to_html(readme_path, output_path):
     """Converte i link in HTML con favicon, titolo, descrizione e dominio; mantiene il resto in Markdown."""
     
-    # CSS per uno stile scuro elegante
+    # CSS per uno stile scuro con margini aumentati
     css_content = """
     <style>
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
             line-height: 1.6;
-            color: #e0e0e0; /* Colore del testo grigio chiaro */
-            background-color: #121212;  /* Sfondo scuro */
+            color: #ffffff;
+            background-color: #121212;
             display: flex;
             justify-content: center;
             padding: 40px 20px;
         }
         .content {
-            max-width: 1000px; /* Margine aumentato */
+            max-width: 1000px; /* Aumentato per dare più spazio */
             width: 100%;
             margin: auto;
         }
@@ -59,7 +59,7 @@ def convert_links_to_html(readme_path, output_path):
             padding-bottom: 0.3em;
         }
         a {
-            color: #bb86fc; /* Colore viola chiaro per i link */
+            color: #58a6ff; /* Colore blu chiaro per i link */
             text-decoration: none;
         }
         a:hover {
@@ -81,17 +81,17 @@ def convert_links_to_html(readme_path, output_path):
         }
         .link-preview {
             margin-bottom: 1em;
-            padding: 10px;  /* Aumentato il padding */
+            padding: 8px;
             border: 1px solid #444c56;
             border-radius: 6px;
             display: flex;
             align-items: center;
             background-color: #1e1e1e; /* Colore di sfondo per i link */
-            width: calc(50% - 20px);  /* Distanza tra i link */
+            width: calc(50% - 20px);  /* Aumentato per il margine */
         }
         .link-preview img {
-            width: 20px;  /* Larghezza aumentata per le favicon */
-            height: 20px; /* Altezza aumentata per le favicon */
+            width: 16px;
+            height: 16px;
         }
         .link-preview div {
             margin-left: 10px;
@@ -102,7 +102,7 @@ def convert_links_to_html(readme_path, output_path):
         }
         .link-preview-description {
             font-size: small;
-            color: #b0bec5; /* Colore grigio chiaro per la descrizione */
+            color: #b0bec5;
         }
         .link-preview-domain {
             font-size: smaller;
