@@ -6,25 +6,18 @@ from pathlib import Path
 from urllib.parse import urljoin, urlparse
 
 def get_metadata(url):
-    """Recupera titolo, favicon, descrizione e dominio del link, con valori di fallback."""
+    """Fetch title, favicon, description, and domain for a link with defaults if missing."""
     try:
         response = requests.get(url, timeout=5)
         response.raise_for_status()
         soup = BeautifulSoup(response.content, 'html.parser')
 
-        # Titolo: se manca, usa l'URL completo
         title = soup.title.string.strip() if soup.title else url
-
-        # Favicon: risolvi favicon in URL assoluto
         icon_link = soup.find("link", rel="icon") or soup.find("link", rel="shortcut icon")
         favicon_url = urljoin(url, icon_link['href']) if icon_link else urljoin(url, "/favicon.ico")
-
-        # Descrizione: lascia vuoto se mancante
         meta_description = soup.find("meta", attrs={"name": "description"}) or \
                            soup.find("meta", attrs={"property": "og:description"})
         description = meta_description['content'].strip() if meta_description else ""
-
-        # Dominio
         domain = urlparse(url).netloc
 
         return favicon_url, title, description, domain
@@ -33,33 +26,36 @@ def get_metadata(url):
         return "/favicon.ico", url, "", urlparse(url).netloc
 
 def convert_links_to_html(readme_path, output_path):
-    """Converte i link in HTML con favicon, titolo, descrizione e dominio; mantiene il resto in Markdown."""
+    """Convert isolated links to dark-themed HTML with responsive, 2-column layout."""
     
-    # CSS per imitare lo stile GitHub con margini simili a VerseNavigator
     css_content = """
     <style>
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
             line-height: 1.6;
-            color: #24292e;
-            background-color: #ffffff;
+            color: #e1e4e8;
+            background-color: #0d1117;
             display: flex;
             justify-content: center;
-            padding: 40px 20px;
+            padding: 20px;
+            margin: 0;
         }
         .content {
             max-width: 860px;
             width: 100%;
             margin: auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
         h1, h2, h3, h4 {
-            color: #24292e;
+            color: #c9d1d9;
             font-weight: 600;
-            border-bottom: 1px solid #eaecef;
+            border-bottom: 1px solid #30363d;
             padding-bottom: 0.3em;
         }
         a {
-            color: #0366d6;
+            color: #58a6ff;
             text-decoration: none;
         }
         a:hover {
@@ -72,14 +68,21 @@ def convert_links_to_html(readme_path, output_path):
             vertical-align: middle;
             margin-right: 8px;
         }
+        .link-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 16px;
+            width: 100%;
+        }
         .link-preview {
-            margin-bottom: 1em;
-            padding: 8px;
-            border: 1px solid #e1e4e8;
+            flex: 1 1 calc(50% - 8px); /* Ensure two items per row on wide screens */
+            padding: 10px;
+            border: 1px solid #30363d;
             border-radius: 6px;
             display: flex;
             align-items: center;
-            background-color: #f6f8fa;
+            background-color: #161b22;
+            box-sizing: border-box;
         }
         .link-preview img {
             width: 16px;
@@ -90,16 +93,21 @@ def convert_links_to_html(readme_path, output_path):
         }
         .link-preview-title {
             font-weight: bold;
-            color: #0366d6;
+            color: #58a6ff;
         }
         .link-preview-description {
             font-size: small;
-            color: #586069;
+            color: #8b949e;
         }
         .link-preview-domain {
             font-size: smaller;
-            color: #586069;
+            color: #8b949e;
             margin-top: 2px;
+        }
+        @media (max-width: 600px) {
+            .link-preview {
+                flex: 1 1 100%;
+            }
         }
     </style>
     """
@@ -107,18 +115,21 @@ def convert_links_to_html(readme_path, output_path):
     with open(readme_path, 'r', encoding='utf-8') as file:
         lines = file.readlines()
 
-    # Contenuto HTML iniziale
     html_content = f"<html><head>{css_content}</head><body><div class='content'>\n"
-    
-    # Converti ogni riga
-    for line in lines:
-        # Riconosci link singoli su righe isolate
+    link_container_opened = False
+
+    i = 0
+    while i < len(lines):
+        line = lines[i].strip()
         url_match = re.match(r'^\s*(https?://[^\s]+)\s*$', line)
+        
         if url_match:
+            if not link_container_opened:
+                html_content += "<div class='link-container'>\n"
+                link_container_opened = True
+            
             url = url_match.group(1)
             favicon, title, description, domain = get_metadata(url)
-            
-            # Formatta il link in HTML con favicon, titolo, descrizione e dominio
             html_line = (f'<div class="link-preview">'
                          f'<img src="{favicon}" alt="favicon">'
                          f'<div>'
@@ -127,14 +138,37 @@ def convert_links_to_html(readme_path, output_path):
                          f'<span class="link-preview-domain">{domain}</span>'
                          f'</div>'
                          f'</div>\n')
-            html_content += html_line
-        else:
-            # Converte il Markdown in HTML per tutte le altre righe
-            html_content += markdown(line)
 
+            html_content += html_line
+            i += 1
+
+            # Se il prossimo elemento è un link, raggruppa a coppie
+            if i < len(lines) and re.match(r'^\s*(https?://[^\s]+)\s*$', lines[i].strip()):
+                url = re.match(r'^\s*(https?://[^\s]+)\s*$', lines[i].strip()).group(1)
+                favicon, title, description, domain = get_metadata(url)
+                html_line = (f'<div class="link-preview">'
+                             f'<img src="{favicon}" alt="favicon">'
+                             f'<div>'
+                             f'<a href="{url}" target="_blank" class="link-preview-title">{title}</a><br>'
+                             f'<span class="link-preview-description">{description}</span><br>'
+                             f'<span class="link-preview-domain">{domain}</span>'
+                             f'</div>'
+                             f'</div>\n')
+                html_content += html_line
+                i += 1
+
+            html_content += "</div>\n"  # Chiude la coppia o il singolo link
+            link_container_opened = False
+        else:
+            if link_container_opened:
+                html_content += "</div>\n"  # Chiudi il contenitore dei link
+                link_container_opened = False
+            html_content += markdown(line)  # Converti e aggiungi testo Markdown
+
+    if link_container_opened:
+        html_content += "</div>\n"  # Chiudi il contenitore dei link, se aperto
     html_content += "</div></body></html>"
-    
-    # Salva l'output come HTML
+
     output_path.write_text(html_content, encoding='utf-8')
 
 # Percorsi per input e output
@@ -143,5 +177,4 @@ output_dir = Path("docs")
 output_dir.mkdir(exist_ok=True)
 output_html_path = output_dir / "index.html"
 
-# Esegui la conversione
 convert_links_to_html(readme_path, output_html_path)
