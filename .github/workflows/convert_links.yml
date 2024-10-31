@@ -1,36 +1,56 @@
-name: Generate HTML Page
+name: Convert README to HTML
 
 on:
   push:
-    branches:
-      - test
     paths:
       - README.md
+  workflow_dispatch:
 
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout Repository
+      - name: Check out the repository
         uses: actions/checkout@v2
 
       - name: Set up Python
         uses: actions/setup-python@v2
         with:
-          python-version: '3.x'
+          python-version: '3.9'  # Usa la versione Python più recente disponibile
 
-      - name: Install Dependencies
+      - name: Install dependencies
         run: |
-          pip install requests beautifulsoup4 markdown  # Install necessary dependencies
+          python -m pip install --upgrade pip
+          pip install requests beautifulsoup4 markdown
 
-      - name: Generate HTML Page
-        run: python generate_html.py
-
-      - name: Commit HTML Page
+      - name: Generate HTML from README
         run: |
-          git config --local user.name "github-actions"
-          git config --local user.email "github-actions@github.com"
+          python generate_html.py
+
+      - name: Create new branch for HTML update
+        id: create_branch
+        run: |
+          # Crea un timestamp per il nome della branch
+          TIMESTAMP=$(date +'%Y%m%d%H%M%S')
+          BRANCH_NAME="update-html-${TIMESTAMP}"
+          echo "branch_name=${BRANCH_NAME}" >> $GITHUB_ENV
+
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git checkout -b "$BRANCH_NAME"
           git add docs/index.html
-          git commit -m "Update generated HTML page" || echo "No changes to commit"
-          git push origin HEAD:gh-pages  # Push directly to gh-pages or appropriate branch
+          git commit -m "Update generated HTML from README.md"
+          git push -u origin "$BRANCH_NAME"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Create Pull Request
+        uses: repo-sync/pull-request@v2
+        with:
+          destination_branch: test  # sostituisci con il branch protetto, se è diverso da `main`
+          source_branch: ${{ env.branch_name }}
+          pr_title: "Aggiornamento automatico HTML da README.md"
+          pr_body: "Questa pull request aggiorna la pagina HTML generata automaticamente dal file README.md."
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
