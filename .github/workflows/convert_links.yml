@@ -1,10 +1,9 @@
 name: Convert README to HTML
 
 on:
-  push:
+  pull_request:
     paths:
       - README.md
-  workflow_dispatch:
 
 jobs:
   build:
@@ -17,7 +16,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v2
         with:
-          python-version: '3.9'  # Usa la versione Python più recente disponibile
+          python-version: '3.9'
 
       - name: Install dependencies
         run: |
@@ -28,29 +27,12 @@ jobs:
         run: |
           python generate_html.py
 
-      - name: Create new branch for HTML update
-        id: create_branch
+      - name: Commit and push changes to the same PR
         run: |
-          # Crea un timestamp per il nome della branch
-          TIMESTAMP=$(date +'%Y%m%d%H%M%S')
-          BRANCH_NAME="update-html-${TIMESTAMP}"
-          echo "branch_name=${BRANCH_NAME}" >> $GITHUB_ENV
-
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          git checkout -b "$BRANCH_NAME"
           git add docs/index.html
           git commit -m "Update generated HTML from README.md"
-          git push -u origin "$BRANCH_NAME"
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Create Pull Request
-        uses: repo-sync/pull-request@v2
-        with:
-          destination_branch: main  # sostituisci con il branch protetto, se è diverso da `main`
-          source_branch: ${{ env.branch_name }}
-          pr_title: "Aggiornamento automatico HTML da README.md"
-          pr_body: "Questa pull request aggiorna la pagina HTML generata automaticamente dal file README.md."
+          git push
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
