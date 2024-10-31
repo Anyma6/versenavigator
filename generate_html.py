@@ -1,88 +1,112 @@
 import re
-import logging
+import requests
 from bs4 import BeautifulSoup
 from markdown import markdown
 from pathlib import Path
 from urllib.parse import urljoin, urlparse
-import requests
-
-# Configurazione logging
-logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
 
 def get_metadata(url):
-    """Fetch title, favicon, description, and domain without caching."""
+    """Recupera titolo, favicon, descrizione e dominio del link, con valori di fallback."""
     try:
-        logging.info(f"Fetching metadata for URL: {url}")
         response = requests.get(url, timeout=5)
         response.raise_for_status()
-        soup = BeautifulSoup(response.text, 'html.parser')
+        soup = BeautifulSoup(response.content, 'html.parser')
 
+        # Titolo: se manca, usa l'URL completo
         title = soup.title.string.strip() if soup.title else url
+
+        # Favicon: risolvi favicon in URL assoluto
         icon_link = soup.find("link", rel="icon") or soup.find("link", rel="shortcut icon")
         favicon_url = urljoin(url, icon_link['href']) if icon_link else urljoin(url, "/favicon.ico")
+
+        # Descrizione: lascia vuoto se mancante
         meta_description = soup.find("meta", attrs={"name": "description"}) or \
                            soup.find("meta", attrs={"property": "og:description"})
         description = meta_description['content'].strip() if meta_description else ""
+
+        # Dominio
         domain = urlparse(url).netloc
 
         return favicon_url, title, description, domain
     except Exception as e:
-        logging.error(f"Error fetching metadata from {url}: {e}")
+        print(f"Error fetching metadata from {url}: {e}")
         return "/favicon.ico", url, "", urlparse(url).netloc
 
 def convert_links_to_html(readme_path, output_path):
-    """Convert isolated links to dark-themed HTML with responsive, 2-column layout."""
+    """Converte i link in HTML con favicon, titolo, descrizione e dominio; mantiene il resto in Markdown."""
     
+    # CSS per imitare lo stile GitHub con margini simili a VerseNavigator
     css_content = """
     <style>
-        /* Dark Theme Styles */
         body {
-            background-color: #121212;
-            color: #e0e0e0;
-            font-family: Arial, sans-serif;
-            margin: 20px;
-            padding: 20px;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
             line-height: 1.6;
+            color: #24292e;
+            background-color: #ffffff;
+            display: flex;
+            justify-content: center;
+            padding: 40px 20px;
         }
         .content {
-            max-width: 1200px;
+            max-width: 860px;
+            width: 100%;
             margin: auto;
+        }
+        h1, h2, h3, h4 {
+            color: #24292e;
+            font-weight: 600;
+            border-bottom: 1px solid #eaecef;
+            padding-bottom: 0.3em;
+        }
+        a {
+            color: #0366d6;
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        p {
+            margin: 1em 0;
+        }
+        img {
+            vertical-align: middle;
+            margin-right: 8px;
         }
         .link-container {
             display: flex;
             flex-wrap: wrap;
             justify-content: space-between;
+            margin-bottom: 1em;
         }
         .link-preview {
-            background-color: #1e1e1e;
-            border-radius: 5px;
-            padding: 15px;
-            margin: 10px;
-            flex: 0 0 calc(50% - 20px);
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
-            transition: background-color 0.3s;
-        }
-        .link-preview:hover {
-            background-color: #2b2b2b;
+            margin-bottom: 1em;
+            padding: 8px;
+            border: 1px solid #e1e4e8;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            background-color: #f6f8fa;
+            width: calc(50% - 10px);  /* Adjust for margin */
         }
         .link-preview img {
-            width: 20px;
-            height: 20px;
-            margin-right: 10px;
-            vertical-align: middle;
+            width: 16px;
+            height: 16px;
+        }
+        .link-preview div {
+            margin-left: 10px;
         }
         .link-preview-title {
-            font-size: 1.2em;
-            color: #1e90ff;
-            text-decoration: none;
+            font-weight: bold;
+            color: #0366d6;
         }
         .link-preview-description {
-            font-size: 0.9em;
-            color: #b0b0b0;
+            font-size: small;
+            color: #586069;
         }
         .link-preview-domain {
-            font-size: 0.8em;
-            color: #757575;
+            font-size: smaller;
+            color: #586069;
+            margin-top: 2px;
         }
     </style>
     """
@@ -90,8 +114,8 @@ def convert_links_to_html(readme_path, output_path):
     with open(readme_path, 'r', encoding='utf-8') as file:
         lines = file.readlines()
 
+    # Contenuto HTML iniziale
     html_content = f"<html><head>{css_content}</head><body><div class='content'>\n"
-    link_container_opened = False
 
     i = 0
     while i < len(lines):
@@ -99,12 +123,10 @@ def convert_links_to_html(readme_path, output_path):
         url_match = re.match(r'^\s*(https?://[^\s]+)\s*$', line)
         
         if url_match:
-            if not link_container_opened:
-                html_content += "<div class='link-container'>\n"
-                link_container_opened = True
-            
             url = url_match.group(1)
             favicon, title, description, domain = get_metadata(url)
+
+            # Crea un div per il link
             html_line = (f'<div class="link-preview">'
                          f'<img src="{favicon}" alt="favicon">'
                          f'<div>'
@@ -112,39 +134,39 @@ def convert_links_to_html(readme_path, output_path):
                          f'<span class="link-preview-description">{description}</span><br>'
                          f'<span class="link-preview-domain">{domain}</span>'
                          f'</div>'
-                         f'</div>\n')
+                         f'</div>')
 
-            html_content += html_line
-            i += 1
+            # Controlla se c'è un secondo link sulla riga successiva
+            if i + 1 < len(lines):
+                next_line = lines[i + 1].strip()
+                next_url_match = re.match(r'^\s*(https?://[^\s]+)\s*$', next_line)
+                if next_url_match:
+                    next_url = next_url_match.group(1)
+                    favicon_next, title_next, description_next, domain_next = get_metadata(next_url)
+                    html_line += (f'<div class="link-preview">'
+                                   f'<img src="{favicon_next}" alt="favicon">'
+                                   f'<div>'
+                                   f'<a href="{next_url}" target="_blank" class="link-preview-title">{title_next}</a><br>'
+                                   f'<span class="link-preview-description">{description_next}</span><br>'
+                                   f'<span class="link-preview-domain">{domain_next}</span>'
+                                   f'</div>'
+                                   f'</div>')
 
-            # Se il prossimo elemento è un link, raggruppa a coppie
-            if i < len(lines) and re.match(r'^\s*(https?://[^\s]+)\s*$', lines[i].strip()):
-                url = re.match(r'^\s*(https?://[^\s]+)\s*$', lines[i].strip()).group(1)
-                favicon, title, description, domain = get_metadata(url)
-                html_line = (f'<div class="link-preview">'
-                             f'<img src="{favicon}" alt="favicon">'
-                             f'<div>'
-                             f'<a href="{url}" target="_blank" class="link-preview-title">{title}</a><br>'
-                             f'<span class="link-preview-description">{description}</span><br>'
-                             f'<span class="link-preview-domain">{domain}</span>'
-                             f'</div>'
-                             f'</div>\n')
-                html_content += html_line
-                i += 1  # Incrementa l'indice per il secondo link
+                    # Incrementa l'indice di lettura per saltare il secondo link
+                    i += 1
 
-            html_content += "</div>\n"  # Chiude il contenitore dei link
-            link_container_opened = False
+            html_content += f'<div class="link-container">{html_line}</div>\n'
+        
         else:
-            if link_container_opened:
-                html_content += "</div>\n"  # Chiudi il contenitore dei link
-                link_container_opened = False
-            html_content += markdown(line)  # Converti e aggiungi testo Markdown
-            i += 1  # Incrementa l'indice per il testo non link
+            # Converte il Markdown in HTML per tutte le altre righe
+            html_content += markdown(line)
 
-    if link_container_opened:
-        html_content += "</div>\n"  # Chiudi il contenitore dei link, se aperto
+        # Incrementa l'indice per passare alla riga successiva
+        i += 1
+
     html_content += "</div></body></html>"
-
+    
+    # Salva l'output come HTML
     output_path.write_text(html_content, encoding='utf-8')
 
 # Percorsi per input e output
@@ -153,5 +175,5 @@ output_dir = Path("docs")
 output_dir.mkdir(exist_ok=True)
 output_html_path = output_dir / "index.html"
 
+# Esegui la conversione
 convert_links_to_html(readme_path, output_html_path)
-logging.info("HTML generation completed.")
