@@ -35,20 +35,20 @@ def get_metadata(url):
 def convert_links_to_html(readme_path, output_path):
     """Converte i link in HTML con favicon, titolo, descrizione e dominio; mantiene il resto in Markdown."""
     
-    # CSS per uno stile scuro
+    # CSS per uno stile scuro con margini aumentati
     css_content = """
     <style>
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
             line-height: 1.6;
             color: #ffffff;
-            background-color: #24292e;
+            background-color: #000000;  /* Sfondo nero */
             display: flex;
             justify-content: center;
             padding: 40px 20px;
         }
         .content {
-            max-width: 860px;
+            max-width: 1000px; /* Aumentato per dare più spazio */
             width: 100%;
             margin: auto;
         }
@@ -59,7 +59,7 @@ def convert_links_to_html(readme_path, output_path):
             padding-bottom: 0.3em;
         }
         a {
-            color: #58a6ff;
+            color: #58a6ff; /* Colore blu chiaro per i link */
             text-decoration: none;
         }
         a:hover {
@@ -85,8 +85,8 @@ def convert_links_to_html(readme_path, output_path):
             border-radius: 6px;
             display: flex;
             align-items: center;
-            background-color: #344b53;
-            width: calc(50% - 10px);  /* Adjust for margin */
+            background-color: #222222; /* Colore di sfondo per i link */
+            width: calc(50% - 20px);  /* Aumentato per il margine */
         }
         .link-preview img {
             width: 16px;
@@ -153,8 +153,9 @@ def convert_links_to_html(readme_path, output_path):
                                    f'</div>')
 
                     # Incrementa l'indice di lettura per saltare il secondo link
-                    i += 1
+                    i += 1  # Skip the next line since we've processed it
 
+            # Aggiungi il contenitore di link alla pagina HTML
             html_content += f'<div class="link-container">{html_line}</div>\n'
         
         else:
