@@ -1,4 +1,4 @@
-name: Convert README to HTML
+name: Generate HTML Page
 
 on:
   pull_request:
@@ -12,24 +12,23 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Check out the repository
+      - name: Checkout Repository
         uses: actions/checkout@v2
 
       - name: Set up Python
         uses: actions/setup-python@v2
         with:
-          python-version: '3.9'
+          python-version: '3.x'
 
-      - name: Generate HTML from README with optimized timeout and caching
+      - name: Install Dependencies
         run: |
-          python generate_html.py
+          pip install requests beautifulsoup4 markdown  # Install necessary dependencies
 
-      - name: Commit and push changes to the same PR
-        run: |
-          git config --global user.name "github-actions[bot]"
-          git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          git add docs/index.html
-          git commit -m "Update generated HTML from README.md"
-          git push
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Generate HTML Page
+        run: python generate_html.py
+
+      - name: Deploy HTML Page
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./docs
