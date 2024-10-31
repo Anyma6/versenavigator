@@ -28,12 +28,23 @@ jobs:
         run: |
           python generate_html.py
 
-      - name: Commit and push changes
+      - name: Create new branch for HTML update
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git checkout -b update-html-$(date +'%Y%m%d%H%M%S')
           git add docs/index.html
           git commit -m "Update generated HTML from README.md"
-          git push
+          git push -u origin HEAD
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Create Pull Request
+        uses: repo-sync/pull-request@v2
+        with:
+          destination_branch: main  # sostituisci con il branch protetto, se è diverso da `main`
+          source_branch: update-html-$(date +'%Y%m%d%H%M%S')
+          pr_title: "Aggiornamento automatico HTML da README.md"
+          pr_body: "Questa pull request aggiorna la pagina HTML generata automaticamente dal file README.md."
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
