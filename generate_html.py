@@ -35,14 +35,14 @@ def get_metadata(url):
 def convert_links_to_html(readme_path, output_path):
     """Converte i link in HTML con favicon, titolo, descrizione e dominio; mantiene il resto in Markdown."""
     
-    # CSS per imitare lo stile GitHub con margini simili a VerseNavigator
+    # CSS per uno stile scuro
     css_content = """
     <style>
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
             line-height: 1.6;
-            color: #24292e;
-            background-color: #ffffff;
+            color: #ffffff;
+            background-color: #24292e;
             display: flex;
             justify-content: center;
             padding: 40px 20px;
@@ -53,13 +53,13 @@ def convert_links_to_html(readme_path, output_path):
             margin: auto;
         }
         h1, h2, h3, h4 {
-            color: #24292e;
+            color: #ffffff;
             font-weight: 600;
-            border-bottom: 1px solid #eaecef;
+            border-bottom: 1px solid #444c56;
             padding-bottom: 0.3em;
         }
         a {
-            color: #0366d6;
+            color: #58a6ff;
             text-decoration: none;
         }
         a:hover {
@@ -81,11 +81,11 @@ def convert_links_to_html(readme_path, output_path):
         .link-preview {
             margin-bottom: 1em;
             padding: 8px;
-            border: 1px solid #e1e4e8;
+            border: 1px solid #444c56;
             border-radius: 6px;
             display: flex;
             align-items: center;
-            background-color: #f6f8fa;
+            background-color: #344b53;
             width: calc(50% - 10px);  /* Adjust for margin */
         }
         .link-preview img {
@@ -97,15 +97,15 @@ def convert_links_to_html(readme_path, output_path):
         }
         .link-preview-title {
             font-weight: bold;
-            color: #0366d6;
+            color: #58a6ff;
         }
         .link-preview-description {
             font-size: small;
-            color: #586069;
+            color: #c9d1d9;
         }
         .link-preview-domain {
             font-size: smaller;
-            color: #586069;
+            color: #c9d1d9;
             margin-top: 2px;
         }
     </style>
