@@ -22,6 +22,7 @@ https://armory.thespacecoder.space/
 https://sc-qm.tools/
 
 ### Trading, Mining and Economy
+https://test.test
 https://sc-trade.tools/
 https://uexcorp.space/
 https://regolith.rocks/
