@@ -56,19 +56,23 @@ def convert_links_to_html(readme_path, output_path):
         .link-preview {
             background-color: #1e1e1e;
             border-radius: 5px;
-            padding: 10px;
+            padding: 15px;
             margin: 10px;
             flex: 0 0 calc(50% - 20px);
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+            transition: background-color 0.3s;
+        }
+        .link-preview:hover {
+            background-color: #2b2b2b;
         }
         .link-preview img {
-            width: 16px;
-            height: 16px;
+            width: 20px;
+            height: 20px;
             margin-right: 10px;
             vertical-align: middle;
         }
         .link-preview-title {
-            font-size: 1.1em;
+            font-size: 1.2em;
             color: #1e90ff;
             text-decoration: none;
         }
