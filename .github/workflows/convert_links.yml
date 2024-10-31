@@ -3,7 +3,7 @@ name: Generate HTML Page
 on:
   pull_request:
     branches:
-      - test
+      - main
     paths:
       - README.md
 
@@ -27,8 +27,10 @@ jobs:
       - name: Generate HTML Page
         run: python generate_html.py
 
-      - name: Deploy HTML Page
-        uses: peaceiris/actions-gh-pages@v3
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./docs
+      - name: Commit HTML Page
+        run: |
+          git config --local user.name "github-actions"
+          git config --local user.email "github-actions@github.com"
+          git add docs/index.html
+          git commit -m "Update generated HTML page" || echo "No changes to commit"
+          git push origin HEAD:gh-pages  # Push directly to gh-pages or appropriate branch
