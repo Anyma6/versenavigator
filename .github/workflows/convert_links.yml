@@ -1,7 +1,7 @@
 name: Generate HTML Page
 
 on:
-  pull_request:
+  push:
     branches:
       - test
     paths:
