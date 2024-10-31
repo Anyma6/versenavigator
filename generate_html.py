@@ -153,8 +153,9 @@ def convert_links_to_html(readme_path, output_path):
                                    f'</div>')
 
                     # Incrementa l'indice di lettura per saltare il secondo link
-                    i += 1
+                    i += 1  # Skip the next line since we've processed it
 
+            # Aggiungi il contenitore di link alla pagina HTML
             html_content += f'<div class="link-container">{html_line}</div>\n'
         
         else:
