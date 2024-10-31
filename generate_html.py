@@ -130,15 +130,16 @@ def convert_links_to_html(readme_path, output_path):
                              f'</div>'
                              f'</div>\n')
                 html_content += html_line
-                i += 1
+                i += 1  # Incrementa l'indice per il secondo link
 
-            html_content += "</div>\n"  # Chiude la coppia o il singolo link
+            html_content += "</div>\n"  # Chiude il contenitore dei link
             link_container_opened = False
         else:
             if link_container_opened:
                 html_content += "</div>\n"  # Chiudi il contenitore dei link
                 link_container_opened = False
             html_content += markdown(line)  # Converti e aggiungi testo Markdown
+            i += 1  # Incrementa l'indice per il testo non link
 
     if link_container_opened:
         html_content += "</div>\n"  # Chiudi il contenitore dei link, se aperto
