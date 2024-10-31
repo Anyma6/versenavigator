@@ -1,20 +1,26 @@
 import re
-import requests
 import json
 from bs4 import BeautifulSoup
 from markdown import markdown
 from pathlib import Path
 from urllib.parse import urljoin, urlparse
+import http.client
 
 def get_metadata(url, cache):
     """Fetch title, favicon, description, and domain with caching and reduced timeout."""
     if url in cache:
         return cache[url]
 
+    parsed_url = urlparse(url)
+    connection = http.client.HTTPSConnection(parsed_url.netloc, timeout=3)
     try:
-        response = requests.get(url, timeout=3)
-        response.raise_for_status()
-        soup = BeautifulSoup(response.content, 'html.parser')
+        connection.request("GET", parsed_url.path or "/")
+        response = connection.getresponse()
+        if response.status != 200:
+            raise Exception(f"Error fetching URL: Status {response.status}")
+
+        content = response.read()
+        soup = BeautifulSoup(content, 'html.parser')
 
         title = soup.title.string.strip() if soup.title else url
         icon_link = soup.find("link", rel="icon") or soup.find("link", rel="shortcut icon")
@@ -22,13 +28,15 @@ def get_metadata(url, cache):
         meta_description = soup.find("meta", attrs={"name": "description"}) or \
                            soup.find("meta", attrs={"property": "og:description"})
         description = meta_description['content'].strip() if meta_description else ""
-        domain = urlparse(url).netloc
+        domain = parsed_url.netloc
 
         cache[url] = (favicon_url, title, description, domain)
         return cache[url]
     except Exception as e:
         print(f"Error fetching metadata from {url}: {e}")
-        return "/favicon.ico", url, "", urlparse(url).netloc
+        return "/favicon.ico", url, "", parsed_url.netloc
+    finally:
+        connection.close()
 
 def convert_links_to_html(readme_path, output_path):
     """Convert isolated links to dark-themed HTML with responsive, 2-column layout and caching."""
