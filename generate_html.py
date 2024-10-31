@@ -1,26 +1,26 @@
 import re
 import json
+import logging
 from bs4 import BeautifulSoup
 from markdown import markdown
 from pathlib import Path
 from urllib.parse import urljoin, urlparse
-import http.client
+import requests
+
+# Configurazione logging
+logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
 
 def get_metadata(url, cache):
     """Fetch title, favicon, description, and domain with caching and reduced timeout."""
     if url in cache:
+        logging.info(f"Cache hit for URL: {url}")
         return cache[url]
 
-    parsed_url = urlparse(url)
-    connection = http.client.HTTPSConnection(parsed_url.netloc, timeout=3)
     try:
-        connection.request("GET", parsed_url.path or "/")
-        response = connection.getresponse()
-        if response.status != 200:
-            raise Exception(f"Error fetching URL: Status {response.status}")
-
-        content = response.read()
-        soup = BeautifulSoup(content, 'html.parser')
+        logging.info(f"Fetching metadata for URL: {url}")
+        response = requests.get(url, timeout=5)
+        response.raise_for_status()
+        soup = BeautifulSoup(response.text, 'html.parser')
 
         title = soup.title.string.strip() if soup.title else url
         icon_link = soup.find("link", rel="icon") or soup.find("link", rel="shortcut icon")
@@ -28,99 +28,63 @@ def get_metadata(url, cache):
         meta_description = soup.find("meta", attrs={"name": "description"}) or \
                            soup.find("meta", attrs={"property": "og:description"})
         description = meta_description['content'].strip() if meta_description else ""
-        domain = parsed_url.netloc
+        domain = urlparse(url).netloc
 
         cache[url] = (favicon_url, title, description, domain)
         return cache[url]
     except Exception as e:
-        print(f"Error fetching metadata from {url}: {e}")
-        return "/favicon.ico", url, "", parsed_url.netloc
-    finally:
-        connection.close()
+        logging.error(f"Error fetching metadata from {url}: {e}")
+        return "/favicon.ico", url, "", urlparse(url).netloc
 
 def convert_links_to_html(readme_path, output_path):
     """Convert isolated links to dark-themed HTML with responsive, 2-column layout and caching."""
     
     css_content = """
     <style>
+        /* Dark Theme Styles */
         body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
-            line-height: 1.6;
-            color: #e1e4e8;
-            background-color: #0d1117;
-            display: flex;
-            justify-content: center;
+            background-color: #121212;
+            color: #e0e0e0;
+            font-family: Arial, sans-serif;
+            margin: 20px;
             padding: 20px;
-            margin: 0;
+            line-height: 1.6;
         }
         .content {
-            max-width: 860px;
-            width: 100%;
+            max-width: 1200px;
             margin: auto;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-        h1, h2, h3, h4 {
-            color: #c9d1d9;
-            font-weight: 600;
-            border-bottom: 1px solid #30363d;
-            padding-bottom: 0.3em;
-        }
-        a {
-            color: #58a6ff;
-            text-decoration: none;
-        }
-        a:hover {
-            text-decoration: underline;
-        }
-        p {
-            margin: 1em 0;
-        }
-        img {
-            vertical-align: middle;
-            margin-right: 8px;
         }
         .link-container {
             display: flex;
             flex-wrap: wrap;
-            gap: 16px;
-            width: 100%;
+            justify-content: space-between;
         }
         .link-preview {
-            flex: 1 1 calc(50% - 8px); /* Ensure two items per row on wide screens */
+            background-color: #1e1e1e;
+            border-radius: 5px;
             padding: 10px;
-            border: 1px solid #30363d;
-            border-radius: 6px;
-            display: flex;
-            align-items: center;
-            background-color: #161b22;
-            box-sizing: border-box;
+            margin: 10px;
+            flex: 0 0 calc(50% - 20px);
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
         }
         .link-preview img {
             width: 16px;
             height: 16px;
-        }
-        .link-preview div {
-            margin-left: 10px;
+            margin-right: 10px;
+            vertical-align: middle;
         }
         .link-preview-title {
-            font-weight: bold;
-            color: #58a6ff;
+            font-size: 1.1em;
+            color: #1e90ff;
+            text-decoration: none;
         }
         .link-preview-description {
-            font-size: small;
-            color: #8b949e;
+            font-size: 0.9em;
+            color: #b0b0b0;
         }
         .link-preview-domain {
-            font-size: smaller;
-            color: #8b949e;
-            margin-top: 2px;
-        }
-        @media (max-width: 600px) {
-            .link-preview {
-                flex: 1 1 100%;
-            }
+            font-size: 0.8em;
+            color: #757575;
         }
     </style>
     """
@@ -203,3 +167,4 @@ output_dir.mkdir(exist_ok=True)
 output_html_path = output_dir / "index.html"
 
 convert_links_to_html(readme_path, output_html_path)
+logging.info("HTML generation completed.")
