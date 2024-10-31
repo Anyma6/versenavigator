@@ -2,6 +2,8 @@ name: Convert README to HTML
 
 on:
   pull_request:
+    branches:
+      - test
     paths:
       - README.md
 
@@ -18,12 +20,20 @@ jobs:
         with:
           python-version: '3.9'
 
+      - name: Cache pip dependencies
+        uses: actions/cache@v2
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ hashFiles('requirements.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-
+
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install requests beautifulsoup4 markdown
+          pip install -r requirements.txt
 
-      - name: Generate HTML from README
+      - name: Generate HTML from README with optimized timeout and caching
         run: |
           python generate_html.py
 
