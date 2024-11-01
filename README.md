@@ -1,4 +1,4 @@
-# 🌌 VerseNavigator - Star Citizen Community Resources 🌌
+# 🌌 VerseNavigator - Star Citizen Community Resources
 
 [![Repository Stars](https://img.shields.io/github/stars/Anyma6/versenavigator?style=social)](https://github.com/Anyma6/versenavigator/stargazers) [![Repository Forks](https://img.shields.io/github/forks/Anyma6/versenavigator?style=social)](https://github.com/Anyma6/versenavigator/network/members) [![Contributors](https://img.shields.io/github/contributors/Anyma6/versenavigator)](https://github.com/Anyma6/versenavigator/graphs/contributors) [![Issues](https://img.shields.io/github/issues/Anyma6/versenavigator)](https://github.com/Anyma6/versenavigator/issues) [![Pull Requests](https://img.shields.io/github/issues-pr/Anyma6/versenavigator)](https://github.com/Anyma6/versenavigator/pulls)
 
