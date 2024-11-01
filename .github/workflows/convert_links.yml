@@ -2,8 +2,10 @@ name: Convert README to HTML
 
 on:
   push:
+    branches:
+      - main
     paths:
-      - README.md
+      - 'README.md'
   workflow_dispatch:
 
 jobs:
@@ -50,7 +52,7 @@ jobs:
         with:
           destination_branch: main  # sostituisci con il branch protetto, se è diverso da `main`
           source_branch: ${{ env.branch_name }}
-          pr_title: "Aggiornamento automatico HTML da README.md"
-          pr_body: "Questa pull request aggiorna la pagina HTML generata automaticamente dal file README.md."
+          pr_title: "Automatic HTML Update from README.md"
+          pr_body: "This pull request updates the automatically generated HTML page from the README.md file."
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
