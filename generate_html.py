@@ -41,7 +41,7 @@ def convert_links_to_html(readme_path, output_path):
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
             line-height: 1.6;
-            color: #ffffff;
+            color: #e0e0e0;
             background-color: #121212;
             display: flex;
             justify-content: center;
