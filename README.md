@@ -69,6 +69,7 @@ https://joytokey.net/en/
 https://whitemagic.github.io/JoystickGremlin/
 https://github.com/nefarius/HidHide
 https://sourceforge.net/projects/vjoystick/
+https://subliminal.gg/bindings/
 
 ### Character
 https://www.star-citizen-characters.com/
@@ -89,6 +90,8 @@ https://starcitizentracker.github.io/
 https://dydrmr.github.io/VerseTime/#Orison
 https://randomizer.transversetheverse.com/
 https://www.gorefer.me/randomizer/STAR
+https://www.deltaconsultingsc.com
+https://kiblams.co.uk/sc_pixel_art/
 
 ## Non-English Resources
 We also support non-English resources, organized by language for easy access.
